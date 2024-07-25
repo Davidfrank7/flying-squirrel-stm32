@@ -28,18 +28,23 @@ static void microros_thread(void *argument);
 osThreadId_t microros_thread_handler;
 const osThreadAttr_t microros_thread_attributes = {
   .name = "microros_thread",
-  .stack_size = 3000 * 4,
+  .stack_size = 2000 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
 void microros_thread_init(void)
 {
     microros_thread_handler = osThreadNew(microros_thread, NULL, &microros_thread_attributes);
+    if (microros_thread_handler == NULL)
+    {
+        Error_Handler();
+    }
 }
 
 void microros_thread(void *argument)
 {
     /* USER CODE BEGIN StartDefaultTask */
+    UNUSED(argument);
     /* Infinite loop */
     // micro-ROS configuration
 
