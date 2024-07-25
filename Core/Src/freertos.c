@@ -45,14 +45,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-osThreadId_t imuTaskHandle;
-const osThreadAttr_t imuTask_attributes = {
-  .name = "imuTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
 
-uint8_t imu_rx_data;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -64,7 +57,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-void imu_task(void *argument);
+extern void imu_thread_init(void);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -103,7 +96,6 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  imuTaskHandle = osThreadNew(imu_task, NULL, &imuTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -124,6 +116,8 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN StartDefaultTask */
   UNUSED(argument);
   HAL_UART_Transmit(&huart1, (uint8_t *)"Flying squirrel\n", 16, 1000);
+
+  imu_thread_init();
   /* Infinite loop */
   for(;;)
   {
@@ -134,29 +128,6 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-void imu_task(void *argument)
-{
-  UNUSED(argument);
-  // 开启UART2接收中断
-  HAL_UART_Receive_IT(&huart2, &imu_rx_data, 1);
-
-  for(;;)
-  {
-    // 等待接收中断
-    osDelay(1);
-  }
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  if(huart->Instance == USART2)
-  {
-    // 处理接收到的数据
-    HAL_UART_Transmit(&huart1, &imu_rx_data, 1, 1000);
-    // 重新开启接收中断
-    HAL_UART_Receive_IT(&huart2, &imu_rx_data, 1);
-  }
-}
 
 /* USER CODE END Application */
 
