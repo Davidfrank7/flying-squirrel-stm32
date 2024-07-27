@@ -7,7 +7,7 @@
         {
             "name": "Cortex Debug",
             "cwd": "${workspaceFolder}",
-            "executable": "${workspaceRoot}/build/Debug/${workspaceFolderBasename}.elf",
+            "executable": "${config:cmake.buildDirectory}/Debug/${workspaceFolderBasename}.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
@@ -16,6 +16,7 @@
                 "interface/stlink.cfg",
                 "target/stm32f1x.cfg"
             ],
+            "preLaunchTask": "CMake: 生成"
         }
     ]
 }

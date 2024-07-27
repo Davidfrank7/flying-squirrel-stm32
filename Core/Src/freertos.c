@@ -57,7 +57,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+extern void imu_thread_init(void);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -114,7 +114,10 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  UNUSED(argument);
   HAL_UART_Transmit(&huart1, (uint8_t *)"Flying squirrel\n", 16, 1000);
+
+  imu_thread_init();
   /* Infinite loop */
   for(;;)
   {
