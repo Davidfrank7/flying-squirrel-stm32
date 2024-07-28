@@ -12,7 +12,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
-
 # Define the build type
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
@@ -42,24 +41,36 @@ add_subdirectory(cmake/stm32cubemx)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
+
     # Add user defined library search paths
 )
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+
     # Add user sources here
     BSP/IMU/wit_c_sdk/wit_c_sdk.c
     Core/Src/imu_thread.c
+
+    # EasyLogger sources
+    easylogger/src/elog.c
+    easylogger/src/elog_utils.c
+    easylogger/port/elog_port.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+
     # Add user defined include paths
     BSP/IMU/wit_c_sdk
+
+    # EasyLogger include paths
+    easylogger/inc
 )
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+
     # Add user defined symbols
 )
 
