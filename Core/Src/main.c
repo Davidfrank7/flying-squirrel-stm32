@@ -22,35 +22,43 @@
 #include "cmsis_os.h"
 #include "usart.h"
 #include "gpio.h"
-#include "elgo.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+#include "elog.h"
+#include "stdio.h"
+    /* Private includes
+       ----------------------------------------------------------*/
+    /* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
+    /* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
+    /* Private typedef
+       -----------------------------------------------------------*/
+    /* USER CODE BEGIN PTD */
 
-/* USER CODE END PTD */
+    /* USER CODE END PTD */
 
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
+    /* Private define
+       ------------------------------------------------------------*/
+    /* USER CODE BEGIN PD */
 
-/* USER CODE END PD */
+    /* USER CODE END PD */
 
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
+    /* Private macro
+       -------------------------------------------------------------*/
+    /* USER CODE BEGIN PM */
 
-/* USER CODE END PM */
+    /* USER CODE END PM */
 
-/* Private variables ---------------------------------------------------------*/
+    /* Private variables
+       ---------------------------------------------------------*/
 
-/* USER CODE BEGIN PV */
+    /* USER CODE BEGIN PV */
 
-/* USER CODE END PV */
+    /* USER CODE END PV */
 
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+    /* Private function prototypes
+       -----------------------------------------------*/
+    void
+    SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 

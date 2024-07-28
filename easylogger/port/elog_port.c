@@ -61,7 +61,7 @@ void elog_port_output_lock(void) {
     
     /* add your code here */
     // 关闭全局中断
-    __set_PRIMASK(1);
+   // __set_PRIMASK(1);
 }
 
 /**
@@ -71,7 +71,7 @@ void elog_port_output_unlock(void) {
     
     /* add your code here */
     // 开启全局中断
-    __set_PRIMASK(0);
+   // __set_PRIMASK(0);
 }
 
 /**
