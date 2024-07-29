@@ -20,45 +20,44 @@
 #define LOG_TAG "main"
 #include "main.h"
 #include "cmsis_os.h"
-#include "usart.h"
-#include "gpio.h"
 #include "elog.h"
+#include "gpio.h"
 #include "stdio.h"
-    /* Private includes
-       ----------------------------------------------------------*/
-    /* USER CODE BEGIN Includes */
+#include "usart.h"
+/* Private includes
+   ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 
-    /* USER CODE END Includes */
+/* USER CODE END Includes */
 
-    /* Private typedef
-       -----------------------------------------------------------*/
-    /* USER CODE BEGIN PTD */
+/* Private typedef
+   -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
 
-    /* USER CODE END PTD */
+/* USER CODE END PTD */
 
-    /* Private define
-       ------------------------------------------------------------*/
-    /* USER CODE BEGIN PD */
+/* Private define
+   ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
 
-    /* USER CODE END PD */
+/* USER CODE END PD */
 
-    /* Private macro
-       -------------------------------------------------------------*/
-    /* USER CODE BEGIN PM */
+/* Private macro
+   -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
 
-    /* USER CODE END PM */
+/* USER CODE END PM */
 
-    /* Private variables
-       ---------------------------------------------------------*/
+/* Private variables
+   ---------------------------------------------------------*/
 
-    /* USER CODE BEGIN PV */
+/* USER CODE BEGIN PV */
 
-    /* USER CODE END PV */
+/* USER CODE END PV */
 
-    /* Private function prototypes
-       -----------------------------------------------*/
-    void
-    SystemClock_Config(void);
+/* Private function prototypes
+   -----------------------------------------------*/
+void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -115,13 +114,15 @@ int main(void)
   // 输出所有内容
   elog_set_fmt(ELOG_LVL_VERBOSE, ELOG_FMT_ALL);
   elog_start();
+  while(1)
+  {
   log_a("Hello EasyLogger!");
   log_e("Hello EasyLogger!");
   log_w("Hello EasyLogger!");
   log_i("Hello EasyLogger!");
   log_d("Hello EasyLogger!");
   log_v("Hello EasyLogger!");
-
+  }
   /* USER CODE END 2 */
 
   /* Init scheduler */
