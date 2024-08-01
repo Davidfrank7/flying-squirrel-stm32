@@ -46,7 +46,7 @@
 /* output filter's tag level max num */
 #define ELOG_FILTER_TAG_LVL_MAX_NUM              5
 /* output newline sign */
-#define ELOG_NEWLINE_SIGN                        "\n"
+#define ELOG_NEWLINE_SIGN                        "\r\n"
 /*---------------------------------------------------------------------------*/
 /* enable log color */
 #define ELOG_COLOR_ENABLE
@@ -73,5 +73,5 @@
 //#define ELOG_BUF_OUTPUT_ENABLE
 /* buffer size for buffered output mode */
 #define ELOG_BUF_OUTPUT_BUF_SIZE                 (ELOG_LINE_BUF_SIZE * 10)
-
+#define ELOG_SEM_FAIL
 #endif /* _ELOG_CFG_H_ */
