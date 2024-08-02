@@ -1,0 +1,5 @@
+# APP/CMakeLists.txt
+set(APP_SOURCES ${CMAKE_CURRENT_LIST_DIR}/imu_thread.c)
+
+# 如果有其他头文件，可以设置包含目录
+set(APP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR})

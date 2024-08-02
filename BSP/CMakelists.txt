@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.22)
+
+project(bsp)
+
+# 添加IMU库
+add_subdirectory(IMU)
+
+add_library(bsp INTERFACE)
+
+# 包含库
+target_link_libraries(bsp INTERFACE bsp_imu)

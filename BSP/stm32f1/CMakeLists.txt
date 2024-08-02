@@ -19,10 +19,12 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set the project name
-set(CMAKE_PROJECT_NAME flying-squirrel-stm32)
+set(CMAKE_PROJECT_NAME stm32f1)
 
 # Include toolchain file
 include("cmake/gcc-arm-none-eabi.cmake")
+# 包含APP的CMakeLists.txt
+include(${CMAKE_SOURCE_DIR}/../../APP/CMakeLists.txt)
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -39,6 +41,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
+add_subdirectory(../ bsp)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -48,14 +51,13 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-    BSP/IMU/wit_c_sdk/wit_c_sdk.c
-    Core/Src/imu_thread.c
+    ${APP_SOURCES}
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
-    BSP/IMU/wit_c_sdk
+    ${APP_INCLUDE_DIRS}
 )
 
 # Add project symbols (macros)
@@ -66,6 +68,6 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
-
     # Add user defined libraries
+    bsp
 )
