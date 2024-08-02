@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define log_huart huart1
+#define imu_huart huart2
 
 /* USER CODE BEGIN Private defines */
 
