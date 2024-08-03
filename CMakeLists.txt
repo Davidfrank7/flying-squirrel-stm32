@@ -53,9 +53,9 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/imu_thread.c
 
     # EasyLogger sources
-    easylogger/src/elog.c
-    easylogger/src/elog_utils.c
-    easylogger/port/elog_port.c
+    Core/easylogger/src/elog.c
+    Core/easylogger/src/elog_utils.c
+    Core/easylogger/port/elog_port.c
 )
 
 # Add include paths
@@ -65,7 +65,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     BSP/IMU/wit_c_sdk
 
     # EasyLogger include paths
-    easylogger/inc
+    Core/easylogger/inc
 )
 
 # Add project symbols (macros)
