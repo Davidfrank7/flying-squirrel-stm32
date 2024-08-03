@@ -102,12 +102,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   easylogger_init();
       
-      log_a("Hello EasyLogger!");
-      log_e("Hello EasyLogger!");
-      log_w("Hello EasyLogger!");
-      log_i("Hello EasyLogger!");
-      log_d("Hello EasyLogger!");
-      log_v("Hello EasyLogger!");
+      
       
     
       /* USER CODE END 2 */
