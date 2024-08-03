@@ -22,10 +22,11 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-
+#include "shell_port.h"
+#include "shell.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usart.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,13 +55,21 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for lettershellTask */
+osThreadId_t lettershellTaskHandle;
+const osThreadAttr_t lettershellTask_attributes = {
+  .name = "lettershellTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-extern void imu_thread_init(void);
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
+void shellTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -94,6 +103,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of lettershellTask */
+  lettershellTaskHandle = osThreadNew(shellTask, (void*) &shell, &lettershellTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -114,16 +126,30 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  UNUSED(argument);
-  HAL_UART_Transmit(&huart1, (uint8_t *)"Flying squirrel\n", 16, 1000);
-
-  imu_thread_init();
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
+}
+
+/* USER CODE BEGIN Header_shellTask */
+/**
+* @brief Function implementing the lettershellTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_shellTask */
+__weak void shellTask(void *argument)
+{
+  /* USER CODE BEGIN shellTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END shellTask */
 }
 
 /* Private application code --------------------------------------------------*/
