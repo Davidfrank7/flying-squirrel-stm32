@@ -49,23 +49,18 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
     # Add user sources here
-    BSP/IMU/wit_c_sdk/wit_c_sdk.c
-    Core/Src/imu_thread.c
-
-    # EasyLogger sources
-    Core/easylogger/src/elog.c
-    Core/easylogger/src/elog_utils.c
-    Core/easylogger/port/elog_port.c
+    Core/lettershell/src/shell.c
+    Core/lettershell/src/shell_cmd_list.c
+    Core/lettershell/src/shell_companion.c
+    Core/lettershell/src/shell_ext.c
+    Core/lettershell/src/shell_port.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
     # Add user defined include paths
-    BSP/IMU/wit_c_sdk
-
-    # EasyLogger include paths
-    Core/easylogger/inc
+    Core/lettershell/inc
 )
 
 # Add project symbols (macros)

@@ -8,8 +8,7 @@ enable_language(C ASM)
 
 target_compile_definitions(stm32cubemx INTERFACE 
 	USE_HAL_DRIVER 
-	STM32F103xE 
-	STM32_THREAD_SAFE_STRATEGY=4
+	STM32F103xE
     $<$<CONFIG:Debug>:DEBUG>
 )
 
