@@ -25,6 +25,7 @@
  * Function: Portable interface for each platform.
  * Created on: 2015-04-28
  */
+#include "main.h"
 #include "FreeRTOS.h"
 #include "cmsis_os.h"
 #include "semphr.h"

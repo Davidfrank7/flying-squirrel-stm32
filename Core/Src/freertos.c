@@ -19,7 +19,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
-#include "stm32f1xx_hal_def.h"
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
