@@ -112,7 +112,7 @@ const char *elog_port_get_time(void) {
   if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
 #endif
     TickType_t tick = xTaskGetTickCount();
-    snprintf(cur_system_time, 16, "%d.%.3d", (tick / configTICK_RATE_HZ),
+    snprintf(cur_system_time, 16, "%ld.%.3ld", (tick / configTICK_RATE_HZ),
              tick % configTICK_RATE_HZ);
 #if (INCLUDE_xTaskGetSchedulerState == 1)
   }

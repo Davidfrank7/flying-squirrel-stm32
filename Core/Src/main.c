@@ -22,6 +22,7 @@
 #include "usart.h"
 #include "gpio.h"
 #include "shell_port.h"
+#include "elog.h"
 #include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -98,13 +99,14 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  MX_USART1_UART_Init();
-  /* USER CODE END 2 */
+  easylogger_init();
   ShellInit();
-      /* Init scheduler */
-      osKernelInitialize();
+  /* USER CODE END 2 */
+  /* Init scheduler */
+  osKernelInitialize();
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
   MX_FREERTOS_Init();

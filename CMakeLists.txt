@@ -49,18 +49,26 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
     # Add user sources here
-    Core/lettershell/src/shell.c
-    Core/lettershell/src/shell_cmd_list.c
-    Core/lettershell/src/shell_companion.c
-    Core/lettershell/src/shell_ext.c
-    Core/lettershell/src/shell_port.c
+    # lettershell
+    Middlewares/lettershell/src/shell.c
+    Middlewares/lettershell/src/shell_cmd_list.c
+    Middlewares/lettershell/src/shell_companion.c
+    Middlewares/lettershell/src/shell_ext.c
+    Middlewares/lettershell/src/shell_port.c
+    # easylogger
+    Middlewares/easylogger/src/elog.c
+    Middlewares/easylogger/src/elog_utils.c
+    Middlewares/easylogger/port/elog_port.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
     # Add user defined include paths
-    Core/lettershell/inc
+    Middlewares/lettershell/inc
+
+    # EasyLogger include paths
+    Middlewares/easylogger/inc
 )
 
 # Add project symbols (macros)

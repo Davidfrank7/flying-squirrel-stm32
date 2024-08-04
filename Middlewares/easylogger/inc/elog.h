@@ -38,6 +38,8 @@
 extern "C" {
 #endif
 
+#define __FUNCTION__ __func__
+
 /* output log's level */
 #define ELOG_LVL_ASSERT                      0
 #define ELOG_LVL_ERROR                       1
