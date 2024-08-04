@@ -21,7 +21,6 @@
 #include "cmsis_os.h"
 #include "usart.h"
 #include "gpio.h"
-#include "shell_port.h"
 #include "elog.h"
 #include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
@@ -103,7 +102,6 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   easylogger_init();
-  ShellInit();
   /* USER CODE END 2 */
   /* Init scheduler */
   osKernelInitialize();

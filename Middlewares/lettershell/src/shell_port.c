@@ -9,18 +9,38 @@
  * 
  */
 
+// #include "FreeRTOS.h"
+// #include "semphr.h"
+// #include "shell.h"
+// #include "stm32f1xx_hal.h"
+// #include "task.h"
+
 #include "FreeRTOS.h"
-#include "semphr.h"
-#include "shell.h"
-#include "stm32f1xx_hal.h"
 #include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
 #include "usart.h"
 #include "shell_port.h"
+
+#include "elog.h"
 
 Shell shell;
 char shellBuffer[512];
 
-static SemaphoreHandle_t shellMutex;
+static const char* TAG = "shell";
+
+// SemaphoreHandle_t shellMutex;
+static osSemaphoreId_t shellMutex;
+
+/* Definitions for lettershellTask */
+osThreadId_t lettershellTaskHandle;
+const osThreadAttr_t lettershellTask_attributes = {
+  .name = "lettershellTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+void shellTask(void *argument);
 
 /**
  * @brief 用户shell写
@@ -64,7 +84,9 @@ short ShellRead(char *data, unsigned short len)
  */
 int ShellLock(Shell *shell)
 {
-    xSemaphoreTakeRecursive(shellMutex, portMAX_DELAY);
+    (void) shell;
+    // xSemaphoreTakeRecursive(shellMutex, portMAX_DELAY);
+    osSemaphoreAcquire(shellMutex, osWaitForever);
     return 0;
 }
 
@@ -77,7 +99,9 @@ int ShellLock(Shell *shell)
  */
 int ShellUnlock(Shell *shell)
 {
-    xSemaphoreGiveRecursive(shellMutex);
+    (void) shell;
+    // xSemaphoreGiveRecursive(shellMutex);
+    osSemaphoreRelease(shellMutex);
     return 0;
 }
 
@@ -87,16 +111,24 @@ int ShellUnlock(Shell *shell)
  */
 void ShellInit(void)
 {
-    shellMutex = xSemaphoreCreateMutex();
+    // shellMutex = xSemaphoreCreateMutex();
+    shellMutex = osSemaphoreNew(1, 1, NULL);
 
     shell.write = ShellWrite;
     shell.read = ShellRead;
     shell.lock = ShellLock;
     shell.unlock = ShellUnlock;
     shellInit(&shell, shellBuffer, 512);
+    
+    /* creation of lettershellTask */
+    lettershellTaskHandle = osThreadNew(shellTask, (void*) &shell, &lettershellTask_attributes);
     // if (xTaskCreate(shellTask, "shell", 256, &shell, 5, NULL) != pdPASS)
     // {
-    //     logError("shell task creat failed");
+    //     elog_e(TAG, "shell task creat failed");
     // }
+    if (lettershellTaskHandle == NULL)
+    {
+        elog_e(TAG, "shell task creat failed");
+    }
 }
 // CEVENT_EXPORT(EVENT_INIT_STAGE2, userShellInit);

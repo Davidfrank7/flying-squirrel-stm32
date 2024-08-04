@@ -19,14 +19,15 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
+#include "stm32f1xx_hal_def.h"
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-#include "shell_port.h"
-#include "shell.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "shell_port.h"
+#include "shell.h"
+#include "elog.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,20 +47,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+static char *TAG = "main";
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-/* Definitions for lettershellTask */
-osThreadId_t lettershellTaskHandle;
-const osThreadAttr_t lettershellTask_attributes = {
-  .name = "lettershellTask",
-  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
@@ -69,7 +63,6 @@ const osThreadAttr_t lettershellTask_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
-void shellTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -103,8 +96,6 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of lettershellTask */
-  lettershellTaskHandle = osThreadNew(shellTask, (void*) &shell, &lettershellTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -126,30 +117,15 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  UNUSED(argument);
   /* Infinite loop */
+  ShellInit();
+  elog_i(TAG, "flying squirrel's default task start.");
   for(;;)
   {
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
-}
-
-/* USER CODE BEGIN Header_shellTask */
-/**
-* @brief Function implementing the lettershellTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_shellTask */
-__weak void shellTask(void *argument)
-{
-  /* USER CODE BEGIN shellTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END shellTask */
 }
 
 /* Private application code --------------------------------------------------*/
