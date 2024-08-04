@@ -7,7 +7,7 @@
         {
             "name": "Cortex Debug",
             "cwd": "${workspaceFolder}",
-            "executable": "${config:cmake.buildDirectory}/Debug/${workspaceFolderBasename}.elf",
+            "executable": "${config:cmake.buildDirectory}/default/${workspaceFolderBasename}.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
