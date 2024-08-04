@@ -118,6 +118,7 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN StartDefaultTask */
   UNUSED(argument);
   /* Infinite loop */
+  easylogger_init();
   ShellInit();
   elog_i(TAG, "flying squirrel's default task start.");
   for(;;)

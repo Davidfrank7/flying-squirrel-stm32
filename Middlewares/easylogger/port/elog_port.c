@@ -28,13 +28,12 @@
 #include "main.h"
 #include "FreeRTOS.h"
 #include "cmsis_os.h"
-#include "semphr.h"
 #include "task.h"
 #include "usart.h"
 #include <elog.h>
 #include <stdio.h>
-//! 日志互斥信号量句柄
-static SemaphoreHandle_t LogMutexSemaphore = NULL;
+//! log_uart互斥信号量句柄
+osSemaphoreId_t log_uart_mutex;
 
 /**
  * EasyLogger port initialize
@@ -46,8 +45,9 @@ ElogErrCode elog_port_init(void) {
 
   /* add your code here */
   //! 创建互斥信号值
-  LogMutexSemaphore = xSemaphoreCreateMutex();
-  if (LogMutexSemaphore == NULL) {
+  log_uart_mutex = osSemaphoreNew(1, 1, NULL);
+  // log_uart_mutex = xSemaphoreCreateMutex();
+  if (log_uart_mutex == NULL) {
     printf("elog sem create fail\r\n");
     //result = ELOG_SEM_FAIL ;//!< 注意：ElogErrCode
     }
@@ -83,8 +83,9 @@ void elog_port_output(const char *log, size_t size) {
 void elog_port_output_lock(void) {
 
   /* add your code here */
-  if (NULL != LogMutexSemaphore) {
-    xSemaphoreTake(LogMutexSemaphore, portMAX_DELAY); //!< 等待互斥信号量
+  if (NULL != log_uart_mutex) {
+    // xSemaphoreTake(log_uart_mutex, portMAX_DELAY); //!< 等待互斥信号量
+    osSemaphoreAcquire(log_uart_mutex, osWaitForever);
   }
 }
 
@@ -94,8 +95,9 @@ void elog_port_output_lock(void) {
 void elog_port_output_unlock(void) {
 
   /* add your code here */
-  if (NULL != LogMutexSemaphore) {
-    xSemaphoreGive(LogMutexSemaphore); //!< 发送互斥信号量
+  if (NULL != log_uart_mutex) {
+    // xSemaphoreGive(log_uart_mutex); //!< 发送互斥信号量
+    osSemaphoreRelease(log_uart_mutex);
   }
 }
 
