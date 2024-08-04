@@ -29,8 +29,8 @@ char shellBuffer[512];
 
 static const char* TAG = "shell";
 
-// SemaphoreHandle_t shellMutex;
-static osSemaphoreId_t shellMutex;
+// SemaphoreHandle_t log_uart_mutex;
+extern osSemaphoreId_t log_uart_mutex;
 
 /* Definitions for lettershellTask */
 osThreadId_t lettershellTaskHandle;
@@ -85,8 +85,8 @@ short ShellRead(char *data, unsigned short len)
 int ShellLock(Shell *shell)
 {
     (void) shell;
-    // xSemaphoreTakeRecursive(shellMutex, portMAX_DELAY);
-    osSemaphoreAcquire(shellMutex, osWaitForever);
+    // xSemaphoreTakeRecursive(log_uart_mutex, portMAX_DELAY);
+    osSemaphoreAcquire(log_uart_mutex, osWaitForever);
     return 0;
 }
 
@@ -100,8 +100,8 @@ int ShellLock(Shell *shell)
 int ShellUnlock(Shell *shell)
 {
     (void) shell;
-    // xSemaphoreGiveRecursive(shellMutex);
-    osSemaphoreRelease(shellMutex);
+    // xSemaphoreGiveRecursive(log_uart_mutex);
+    osSemaphoreRelease(log_uart_mutex);
     return 0;
 }
 
@@ -111,8 +111,7 @@ int ShellUnlock(Shell *shell)
  */
 void ShellInit(void)
 {
-    // shellMutex = xSemaphoreCreateMutex();
-    shellMutex = osSemaphoreNew(1, 1, NULL);
+    // log_uart_mutex = xSemaphoreCreateMutex();
 
     shell.write = ShellWrite;
     shell.read = ShellRead;
