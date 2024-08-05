@@ -1,11 +1,6 @@
-#include "main.h"
+#include "app.h"
 #include "wit_c_sdk.h"
 #include "REG.h"
-#include "usart.h"
-
-#include "FreeRTOS.h"
-#include "task.h"
-#include "cmsis_os.h"
 
 #define ACC_UPDATE		0x01
 #define GYRO_UPDATE		0x02
@@ -47,7 +42,7 @@ void imu_thread(void *argument)
     WitRegisterCallBack(imu_data_update_handler);
 
     // 开始UART接收中断
-    HAL_UART_Receive_IT(&huart2, &imu_rx_data, 1);
+    HAL_UART_Receive_IT(&imu_huart, &imu_rx_data, 1);
 
     while (1)
     {
@@ -102,13 +97,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         WitSerialDataIn(imu_rx_data);
         
         // 重新启动UART接收中断
-        HAL_UART_Receive_IT(&huart2, &imu_rx_data, 1);
+        HAL_UART_Receive_IT(&imu_huart, &imu_rx_data, 1);
     }
 }
 
 static void imu_serial_tx(uint8_t *data, uint32_t len)
 {
-    HAL_UART_Transmit(&huart2, data, len, 1000);
+    HAL_UART_Transmit(&imu_huart, data, len, 1000);
 }
 
 static void imu_data_update_handler(uint32_t reg, uint32_t reg_num)

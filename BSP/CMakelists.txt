@@ -1,11 +1,25 @@
-cmake_minimum_required(VERSION 3.22)
+option(BSP_USE_IMU "Enable IMU" ON)
+option(BSP_USE_TOF "Enable TOF" OFF)
 
-project(bsp)
-
-# 添加IMU库
-add_subdirectory(IMU)
-
-add_library(bsp INTERFACE)
-
-# 包含库
-target_link_libraries(bsp INTERFACE bsp_imu)
+set(BSP_SOURCES)
+set(BSP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR})
+if(BSP_USE_IMU)
+    add_compile_definitions(-DBSP_USE_IMU)
+    list(APPEND BSP_SOURCES ${CMAKE_CURRENT_LIST_DIR}/IMU/wit_c_sdk/wit_c_sdk.c)
+    list(APPEND BSP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/IMU/wit_c_sdk)
+endif()
+if(BSP_USE_TOF)
+    add_compile_definitions(-DBSP_USE_TOF)
+    list(APPEND BSP_SOURCES
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/core/src/vl53l0x_api.c
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/core/src/vl53l0x_api_calibration.c
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/core/src/vl53l0x_api_core.c
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/core/src/vl53l0x_api_ranging.c
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/platform/src/vl53l0x_platform.c
+        # ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/soft_platform/src/vl53l0x_platform_log.c
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/demo/vl53l0x.c
+    )
+    list(APPEND BSP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/core/inc
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/platform/inc
+        ${CMAKE_CURRENT_LIST_DIR}/TOF/vl53l0/demo)
+endif()

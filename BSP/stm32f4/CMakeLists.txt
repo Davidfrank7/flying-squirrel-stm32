@@ -12,6 +12,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Define the build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -23,12 +24,14 @@ set(CMAKE_PROJECT_NAME stm32f4)
 
 # Include toolchain file
 include("cmake/gcc-arm-none-eabi.cmake")
+# 包含APP的CMakeLists.txt
+# include(${CMAKE_SOURCE_DIR}/../../APP/CMakeLists.txt)
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # Enable CMake support for ASM and C languages
-enable_language(C ASM)
+enable_language(C CXX ASM)
 
 # Core project settings
 project(${CMAKE_PROJECT_NAME})
@@ -39,6 +42,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
+# add_subdirectory(../ bsp)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -48,11 +52,15 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    # ${APP_SOURCES}
+    # ${BSP_SOURCES}
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    # ${APP_INCLUDE_DIRS}
+    # ${BSP_INCLUDE_DIRS}
 )
 
 # Add project symbols (macros)
@@ -65,4 +73,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
 
     # Add user defined libraries
+    # bsp
 )

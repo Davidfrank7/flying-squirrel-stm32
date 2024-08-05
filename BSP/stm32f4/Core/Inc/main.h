@@ -58,6 +58,7 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 #define log_huart huart1
+#define tof_hi2c hi2c1
 
 /* USER CODE BEGIN Private defines */
 

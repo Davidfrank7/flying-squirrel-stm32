@@ -59,6 +59,9 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define log_huart huart1
 #define imu_huart huart2
+#define tof_hi2c hi2c1
+#define TOF_XSHUT_Pin GPIO_PIN_8
+#define TOF_XSHUT_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

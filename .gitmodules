@@ -1,0 +1,3 @@
+[submodule "Middlewares/EasyLogger"]
+	path = Middlewares/EasyLogger
+	url = https://github.com/armink/EasyLogger.git
