@@ -12,6 +12,9 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Define the build type
@@ -52,15 +55,15 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-    # ${APP_SOURCES}
+    # ${ALL_SOURCES}
     # ${BSP_SOURCES}
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
-    # ${APP_INCLUDE_DIRS}
-    # ${BSP_INCLUDE_DIRS}
+    # ${ALL_INCLUDE_DIRS}
+    # ${ALL_INCLUDE_DIRS}
 )
 
 # Add project symbols (macros)

@@ -8,6 +8,8 @@
 #define MAG_UPDATE		0x08
 #define READ_UPDATE		0x80
 
+static const char *TAG = "imu";
+
 osEventFlagsId_t imuEventHandle;
 const osEventFlagsAttr_t imuEvent_attributes = {
   .name = "imuEvent"
@@ -30,7 +32,7 @@ void imu_thread(void *argument)
 {
     uint32_t imu_event_flags = 0;
     
-    float acc[3], gyro[3], angle[3];
+    float acc[3], gyro[3], angle[3], mag[3];
 
     UNUSED(argument);
 
@@ -56,26 +58,31 @@ void imu_thread(void *argument)
                 acc[i] = sReg[AX + i] / 32768.0f * 16.0f;;
                 gyro[i] = sReg[GX + i] / 32768.0f * 2000.0f;
                 angle[i] = sReg[Yaw + i] / 32768.0f * 180.0f;
+                mag[i] = sReg[HX + i];
             }
             if (imu_event_flags & ACC_UPDATE)
             {
                 // 处理加速度数据
                 // TODO: 通过ROS上报加速度数据
+                elog_i(TAG, "acc: %d.%d %d.%d %d.%d", (int)acc[0], (int)(acc[0] * 100), (int)acc[1], (int)(acc[1] * 100), (int)acc[2], (int)(acc[2] * 100));
             }
             if (imu_event_flags & GYRO_UPDATE)
             {
                 // 处理陀螺仪数据
+                elog_i(TAG, "gyro: %d.%d %d.%d %d.%d", (int)gyro[0], (int)(gyro[0] * 100), (int)gyro[1], (int)(gyro[1] * 100), (int)gyro[2], (int)(gyro[2] * 100));
             }
             if (imu_event_flags & ANGLE_UPDATE)
             {
                 // 处理角度数据
+                elog_i(TAG, "angle: %d.%d %d.%d %d.%d", (int)angle[0], (int)(angle[0] * 100), (int)angle[1], (int)(angle[1] * 100), (int)angle[2], (int)(angle[2] * 100));
             }
             if (imu_event_flags & MAG_UPDATE)
             {
                 // 处理磁场数据
+                elog_i(TAG, "mag: %d %d %d", (int)mag[0], (int)mag[1], (int)mag[2]);
             }
         }
-
+        osDelay(1000);
     }
 }
 
@@ -91,7 +98,7 @@ void imu_thread_init(void)
 // 串口接收中断回调函数
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if(huart->Instance == USART2)
+    if(huart->Instance == imu_huart.Instance)
     {
         // 调用IMU接口解析数据
         WitSerialDataIn(imu_rx_data);
@@ -126,7 +133,7 @@ static void imu_data_update_handler(uint32_t reg, uint32_t reg_num)
                 osEventFlagsSet(imuEventHandle, ANGLE_UPDATE);
                 break;
             default:
-                osEventFlagsSet(imuEventHandle, READ_UPDATE);
+                // osEventFlagsSet(imuEventHandle, READ_UPDATE);
                 break;
         }
         reg++;

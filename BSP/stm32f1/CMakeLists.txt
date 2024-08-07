@@ -12,6 +12,9 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Define the build type
@@ -24,14 +27,10 @@ set(CMAKE_PROJECT_NAME stm32f1)
 
 # Include toolchain file
 include("cmake/gcc-arm-none-eabi.cmake")
-# 包含APP的CMakeLists.txt
-include(${CMAKE_SOURCE_DIR}/../../APP/CMakeLists.txt)
-include(${CMAKE_SOURCE_DIR}/../CMakelists.txt)
+include(${CMAKE_SOURCE_DIR}/../../CMakelists.txt)
 
-message("APP_SOURCES: " ${APP_SOURCES})
-message("BSP_SOURCES: " ${BSP_SOURCES})
-message("APP_INCLUDE_DIRS: " ${APP_INCLUDE_DIRS})
-message("BSP_INCLUDE_DIRS: " ${BSP_INCLUDE_DIRS})
+message("ALL_SOURCES: " ${ALL_SOURCES})
+message("ALL_INCLUDE_DIRS: " ${ALL_INCLUDE_DIRS})
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -57,15 +56,13 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-    ${BSP_SOURCES}
-    ${APP_SOURCES}
+    ${ALL_SOURCES}
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
-    ${BSP_INCLUDE_DIRS}
-    ${APP_INCLUDE_DIRS}
+    ${ALL_INCLUDE_DIRS}
 )
 
 # Add project symbols (macros)

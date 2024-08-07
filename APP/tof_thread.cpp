@@ -6,7 +6,7 @@
 osThreadId_t tof_task_handle;
 const osThreadAttr_t tof_task_attributes = {
   .name = "tof_task",
-  .stack_size = 256 * 4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 

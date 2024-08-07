@@ -12,6 +12,11 @@ extern "C" {
 #include "task.h"
 #include "cmsis_os.h"
 
+#include "elog.h"
+
+
+void board_init(void);
+void app_init(void);
 void Main(void);
 
 #ifdef __cplusplus

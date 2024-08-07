@@ -1,0 +1,43 @@
+option(BSP_USE_IMU "Enable IMU" ON)
+option(BSP_USE_TOF "Enable TOF" OFF)
+
+
+set(ALL_SOURCES 
+    # APP
+    ${CMAKE_CURRENT_LIST_DIR}/APP/main.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/APP/elog_thread.cpp
+    # Middleware
+    ## elog
+    ${CMAKE_CURRENT_LIST_DIR}/Middlewares/EasyLogger/easylogger/src/elog.c
+    ${CMAKE_CURRENT_LIST_DIR}/Middlewares/EasyLogger/easylogger/src/elog_utils.c
+    ${CMAKE_CURRENT_LIST_DIR}/Middlewares/EasyLogger/easylogger/src/elog_async.c
+    ${CMAKE_CURRENT_LIST_DIR}/Middlewares/EasyLogger/easylogger/port/elog_port.c
+    )
+set(ALL_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}
+    # APP
+    ${CMAKE_CURRENT_LIST_DIR}/APP
+    # Middleware
+    ## elog
+    ${CMAKE_CURRENT_LIST_DIR}/Middlewares/EasyLogger/easylogger/inc
+)
+
+if(BSP_USE_IMU)
+    message("BSP_USE_IMU is enabled")
+    add_compile_definitions(-DBSP_USE_IMU)
+    # BSP
+    list(APPEND ALL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/BSP/IMU/wit_c_sdk/wit_c_sdk.c)
+    list(APPEND ALL_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/BSP/IMU/wit_c_sdk)
+    # APP
+    list(APPEND ALL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/APP/imu_thread.cpp)
+    
+endif()
+
+if(BSP_USE_TOF)
+    message("BSP_USE_TOF is enabled")
+    # APP
+    list(APPEND ALL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/APP/tof_thread.cpp)
+endif()
+
+
+message("./${ALL_SOURCES}: " ${ALL_SOURCES})
+message("./{ALL_INCLUDE_DIRS}: " ${ALL_INCLUDE_DIRS})
